@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-01-2024 a las 17:32:00
+-- Tiempo de generación: 11-01-2024 a las 19:53:09
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -35,25 +35,12 @@ CREATE TABLE `carrito` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `dueño`
---
-
-CREATE TABLE `dueño` (
-  `id` int(11) NOT NULL,
-  `login_usuario` varchar(30) NOT NULL,
-  `login_contraseña` varchar(30) NOT NULL,
-  `nombre` varchar(30) NOT NULL,
-  `tarjeta_id` int(16) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `producto`
 --
 
 CREATE TABLE `producto` (
   `id` int(11) NOT NULL,
+  `tienda_id` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `descripcion` varchar(60) NOT NULL,
   `imagen` varchar(30) NOT NULL,
@@ -85,7 +72,7 @@ CREATE TABLE `tienda` (
   `id` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `descripcion` varchar(30) NOT NULL,
-  `dueño_id` int(11) NOT NULL,
+  `vendedor_id` int(11) NOT NULL,
   `abierto` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -98,7 +85,21 @@ CREATE TABLE `tienda` (
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
   `login_usuario` varchar(30) NOT NULL,
-  `login_contraseña` varchar(30) NOT NULL,
+  `login_clave` varchar(30) NOT NULL,
+  `nombre` varchar(30) NOT NULL,
+  `tarjeta_id` int(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `vendedor`
+--
+
+CREATE TABLE `vendedor` (
+  `id` int(11) NOT NULL,
+  `login_usuario` varchar(30) NOT NULL,
+  `login_clave` varchar(30) NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `tarjeta_id` int(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -115,17 +116,11 @@ ALTER TABLE `carrito`
   ADD KEY `producto_id` (`producto_id`);
 
 --
--- Indices de la tabla `dueño`
---
-ALTER TABLE `dueño`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tarjeta_id` (`tarjeta_id`);
-
---
 -- Indices de la tabla `producto`
 --
 ALTER TABLE `producto`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tienda_id` (`tienda_id`);
 
 --
 -- Indices de la tabla `tarjeta`
@@ -138,7 +133,7 @@ ALTER TABLE `tarjeta`
 --
 ALTER TABLE `tienda`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `dueño_id` (`dueño_id`);
+  ADD KEY `dueño_id` (`vendedor_id`);
 
 --
 -- Indices de la tabla `usuario`
@@ -148,14 +143,15 @@ ALTER TABLE `usuario`
   ADD KEY `tarjeta_id` (`tarjeta_id`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- Indices de la tabla `vendedor`
 --
+ALTER TABLE `vendedor`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tarjeta_id` (`tarjeta_id`);
 
 --
--- AUTO_INCREMENT de la tabla `dueño`
+-- AUTO_INCREMENT de las tablas volcadas
 --
-ALTER TABLE `dueño`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
@@ -182,6 +178,12 @@ ALTER TABLE `usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `vendedor`
+--
+ALTER TABLE `vendedor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- Restricciones para tablas volcadas
 --
 
@@ -193,22 +195,28 @@ ALTER TABLE `carrito`
   ADD CONSTRAINT `carrito_ibfk_2` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `dueño`
+-- Filtros para la tabla `producto`
 --
-ALTER TABLE `dueño`
-  ADD CONSTRAINT `dueño_ibfk_1` FOREIGN KEY (`tarjeta_id`) REFERENCES `tarjeta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `producto`
+  ADD CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`id`) REFERENCES `tienda` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tienda`
 --
 ALTER TABLE `tienda`
-  ADD CONSTRAINT `tienda_ibfk_1` FOREIGN KEY (`dueño_id`) REFERENCES `dueño` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tienda_ibfk_1` FOREIGN KEY (`vendedor_id`) REFERENCES `vendedor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
   ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`tarjeta_id`) REFERENCES `tarjeta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `vendedor`
+--
+ALTER TABLE `vendedor`
+  ADD CONSTRAINT `vendedor_ibfk_1` FOREIGN KEY (`tarjeta_id`) REFERENCES `tarjeta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
