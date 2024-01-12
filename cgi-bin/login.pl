@@ -2,6 +2,7 @@
 
 # Recibe: user, password, type (usuario o vendedor)
 # Retorna: <errors> <error> <element></element> <message></message> </error> </errors>
+# Si errors tiene 0 hijos, todo correcto. Si no se deberia imprimir cada error independientemente
 # Obs: Crea una sesion que guarda el id del usuario/vendedor y una cookie que guarda la sesion
 
 use strict;
@@ -38,7 +39,7 @@ login();
 
 sub login {
     if (%errors == 0) {
-        my $sth = $dbh->prepare("SELECT id FROM $type WHERE login_usuario = '$user' AND login_clave = '$password'");
+        my $sth = $dbh->prepare("SELECT `id` FROM $type WHERE login_usuario = '$user' AND login_clave = '$password'");
         $sth->execute();
 
         my @user_row = $sth->fetchrow_array;

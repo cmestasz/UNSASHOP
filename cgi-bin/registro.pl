@@ -1,8 +1,8 @@
 #!perl/bin/perl.exe
 
 # Recibe: user, password, type (usuario o vendedor), name, card_number, card_expire, card_code
-# Retorna: [status => correct/incorrect]
-# Obs: Crea una sesion que guarda el id del usuario/vendedor y una cookie que guarda la sesion
+# Retorna: <errors> <error> <element></element> <message></message> </error> </errors>
+# Si errors tiene 0 hijos, todo correcto. Si no se deberia imprimir cada error independientemente
 
 use strict;
 use warnings;
@@ -43,7 +43,11 @@ if (!$name || length($name) == 0) {
 if (!$card_number || length($card_number) != 16) {
     $errors{card_number} = "Número de tarjeta invalido."
 }
-if (!$card_expire || DateTime->now > $card_expire) {
+my $card_expire_time;
+if ($card_expire && $card_expire =~ /^(\d{4})-(\d{2})-(\d{2})/) {
+    $card_expire_time = DateTime->new(year => $1, month => $2, day => $3);
+}
+if (!$card_expire_time || DateTime->now > $card_expire_time) {
     $errors{card_expire} = "Fecha de expiración invalida."
 }
 if (!$card_code || length($card_code) != 3) {
@@ -55,17 +59,18 @@ register();
 sub register {
     print $cgi->header("text/xml");
     if (%errors == 0) {
-        my $sth = $dbh->prepare("SELECT id FROM tarjeta WHERE numero = '$card_number' AND caducidad = '$card_expire' AND codigo = '$card_code'");
-        $sth->execute();
+        my $sth = $dbh->prepare("INSERT INTO tarjeta (`numero`, `caducidad`, `codigo`, `saldo`) VALUES ('$card_number', '$card_expire', '$card_code', '500')");
+        $sth->execute;
+        
+        $sth = $dbh->prepare("SELECT LAST_INSERT_ID()");
+        $sth->execute;
+        my @card_row = $sth->fetchrow_array;
+        my $card_id = $card_row[0];
 
-        my @user_row = $sth->fetchrow_array;
-        if (@user_row) {
-            $sth = $dbh->prepare("INSERT INTO $type ('login_usuario', 'login_clave', 'nombre', 'tarjeta_id') VALUES ('$user', '$password', '$name', '$user_row[0]')");
-            $sth->execute();
-            return;
-        }
-
-        $errors{login} = "La tarjeta no existe."
+        $sth = $dbh->prepare("INSERT INTO $type (`login_usuario`, `login_clave`, `nombre`, `tarjeta_id`) VALUES ('$user', '$password', '$name', '$card_id')");
+        $sth->execute;
+        
+        return;
     }
     print_errors();
 }
