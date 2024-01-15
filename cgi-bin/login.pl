@@ -1,7 +1,7 @@
 #!perl/bin/perl.exe
 
 # Recibe: user, password, type (usuario o vendedor)
-# Retorna: <errors> <error> <element></element> <message></message> </error> </errors>
+# Retorna: <errors> <error> <element>elemento</element> <message>mensaje de error</message> </error> </errors>
 # Si errors tiene 0 hijos, todo correcto. Si no se deberia imprimir cada error independientemente
 # Obs: Crea una sesion que guarda el id del usuario/vendedor y una cookie que guarda la sesion
 
@@ -45,11 +45,11 @@ sub login {
         my @user_row = $sth->fetchrow_array;
         if (@user_row) {
             my $session = CGI::Session->new();
-            $session->param("user_id", $user_row[0]);
+            $session->param("session_$type", $user_row[0]);
             $session->expire(time + $session_time);
             $session->flush();
 
-            my $cookie = $cgi->cookie(-name => "user_session_id",
+            my $cookie = $cgi->cookie(-name => "id_session_$type",
                                     -value => $session->id(),
                                     -expires => time + $session_time,
                                     "-max-age" => time + $session_time);

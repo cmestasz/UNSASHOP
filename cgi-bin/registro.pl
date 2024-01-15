@@ -1,7 +1,7 @@
 #!perl/bin/perl.exe
 
 # Recibe: user, password, type (usuario o vendedor), name, card_number, card_expire, card_code
-# Retorna: <errors> <error> <element></element> <message></message> </error> </errors>
+# Retorna: <errors> <error> <element>elemento</element> <message>mensaje de error</message> </error> </errors>
 # Si errors tiene 0 hijos, todo correcto. Si no se deberia imprimir cada error independientemente
 
 use strict;
