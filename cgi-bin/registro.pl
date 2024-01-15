@@ -14,11 +14,6 @@ use DateTime;
 
 my $cgi = CGI->new;
 $cgi->charset("UTF-8");
-my $db_user = "unsashop";
-my $db_password = "c!YxWLaRyvODyTWr";
-my $dsn = "dbi:mysql:database=unsashop;host=127.0.0.1";
-my $dbh = DBI->connect($dsn, $db_user, $db_password);
-
 my $user = $cgi->param("user");
 my $password = $cgi->param("password");
 my $type = $cgi->param("type");
@@ -26,6 +21,11 @@ my $name = $cgi->param("name");
 my $card_number = $cgi->param("card_number");
 my $card_expire = $cgi->param("card_expire");
 my $card_code = $cgi->param("card_code");
+
+my $db_user = "unsashop";
+my $db_password = "c!YxWLaRyvODyTWr";
+my $dsn = "dbi:mysql:database=unsashop;host=127.0.0.1";
+my $dbh = DBI->connect($dsn, $db_user, $db_password);
 
 my %errors; 
 if (!$user || length($user) == 0) {
