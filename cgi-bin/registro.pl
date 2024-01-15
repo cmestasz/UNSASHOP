@@ -28,30 +28,30 @@ my $dsn = "dbi:mysql:database=unsashop;host=127.0.0.1";
 my $dbh = DBI->connect($dsn, $db_user, $db_password);
 
 my %errors; 
-if (!$user || length($user) == 0) {
-    $errors{user} = "Usuario invalido."
+if (!$user || length($user) == 0 || length($user) > 30) {
+    $errors{user} = "Usuario invalido.";
 }
-if (!$password || length($password) == 0) {
-    $errors{password} = "Clave invalida."
+if (!$password || length($password) == 0 || length($password) > 30) {
+    $errors{password} = "Clave invalida.";
 }
 if (!$type || ($type ne "usuario" && $type ne "vendedor")) {
-    $errors{type} = "Tipo invalido."
+    $errors{type} = "Tipo invalido.";
 }
-if (!$name || length($name) == 0) {
-    $errors{name} = "Nombre invalido."
+if (!$name || length($name) == 0 || length($name) > 30) {
+    $errors{name} = "Nombre invalido.";
 }
 if (!$card_number || length($card_number) != 16) {
-    $errors{card_number} = "Número de tarjeta invalido."
+    $errors{card_number} = "Número de tarjeta invalido.";
 }
 my $card_expire_time;
 if ($card_expire && $card_expire =~ /^(\d{4})-(\d{2})-(\d{2})/) {
     $card_expire_time = DateTime->new(year => $1, month => $2, day => $3);
 }
 if (!$card_expire_time || DateTime->now > $card_expire_time) {
-    $errors{card_expire} = "Fecha de expiración invalida."
+    $errors{card_expire} = "Fecha de expiración invalida.";
 }
 if (!$card_code || length($card_code) != 3) {
-    $errors{card_code} = "Código de seguridad invalido."
+    $errors{card_code} = "Código de seguridad invalido.";
 }
 
 register();

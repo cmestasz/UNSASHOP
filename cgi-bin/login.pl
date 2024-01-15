@@ -25,10 +25,10 @@ my $dsn = "dbi:mysql:database=unsashop;host=127.0.0.1";
 my $dbh = DBI->connect($dsn, $db_user, $db_password);
 
 my %errors; 
-if (!$user || length($user) == 0) {
+if (!$user || length($user) == 0 || length($user) > 30) {
     $errors{user} = "Usuario invalido."
 }
-if (!$password || length($password) == 0) {
+if (!$password || length($password) == 0 || length($password) > 30) {
     $errors{password} = "Clave invalida."
 }
 if (!$type || ($type ne "usuario" && $type ne "vendedor")) {

@@ -30,11 +30,11 @@ if ($session_cookie) {
     my $id = $session->param("session_id");
     
     my %errors;
-    if (!$name || length($name) == 0) {
-        $errors{name} = "Nombre invalido."
+    if (!$name || length($name) == 0 || length($name) > 30) {
+        $errors{name} = "Nombre invalido.";
     }
-    if (!$description || length($description) == 0) {
-        $errors{description} = "Descripcion invalida."
+    if (!$description || length($description) == 0 || length($description) > 30) {
+        $errors{description} = "Descripcion invalida.";
     }
 
     register();
@@ -43,7 +43,7 @@ if ($session_cookie) {
 sub register {
     print $cgi->header("text/xml");
     if (%errors == 0) {
-        my $sth = $dbh->prepare("INSERT INTO tienda (`nombre`, `descripcion`, `vendedor_id`) VALUES ('$name', '$description', '$id')");
+        my $sth = $dbh->prepare("INSERT INTO tienda (`nombre`, `descripcion`, `vendedor_id`, `abierto`) VALUES ('$name', '$description', '$id', 1)");
         $sth->execute;
         
         return;
