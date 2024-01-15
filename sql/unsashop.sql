@@ -56,7 +56,7 @@ CREATE TABLE `producto` (
 
 CREATE TABLE `tarjeta` (
   `id` int(11) NOT NULL,
-  `numero` varchar(30) NOT NULL,
+  `numero` varchar(16) NOT NULL,
   `caducidad` date NOT NULL,
   `codigo` int(3) NOT NULL,
   `saldo` int(11) NOT NULL
@@ -71,7 +71,7 @@ CREATE TABLE `tarjeta` (
 CREATE TABLE `tienda` (
   `id` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL,
-  `descripcion` varchar(30) NOT NULL,
+  `descripcion` varchar(60) NOT NULL,
   `vendedor_id` int(11) NOT NULL,
   `abierto` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
