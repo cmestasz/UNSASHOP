@@ -14,15 +14,15 @@ use DBI;
 
 my $cgi = CGI->new;
 $cgi->charset("UTF-8");
-my $db_user = "unsashop";
-my $db_password = "c!YxWLaRyvODyTWr";
-my $dsn = "dbi:mysql:database=unsashop;host=127.0.0.1";
-my $dbh = DBI->connect($dsn, $db_user, $db_password);
-
 my $user = $cgi->param("user");
 my $password = $cgi->param("password");
 my $type = $cgi->param("type");
 my $session_time = 86400;
+
+my $db_user = "unsashop";
+my $db_password = "c!YxWLaRyvODyTWr";
+my $dsn = "dbi:mysql:database=unsashop;host=127.0.0.1";
+my $dbh = DBI->connect($dsn, $db_user, $db_password);
 
 my %errors; 
 if (!$user || length($user) == 0) {
@@ -39,13 +39,14 @@ login();
 
 sub login {
     if (%errors == 0) {
-        my $sth = $dbh->prepare("SELECT `id` FROM $type WHERE login_usuario = '$user' AND login_clave = '$password'");
+        my $sth = $dbh->prepare("SELECT `id`, `nombre` FROM $type WHERE login_usuario = '$user' AND login_clave = '$password'");
         $sth->execute();
 
         my @user_row = $sth->fetchrow_array;
         if (@user_row) {
             my $session = CGI::Session->new();
-            $session->param("session_$type", $user_row[0]);
+            $session->param("session_id", $user_row[0]);
+            $session->param("session_name", $user_row[1]);
             $session->expire(time + $session_time);
             $session->flush();
 
