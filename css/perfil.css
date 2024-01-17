@@ -1,0 +1,63 @@
+  body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+    text-align: left;
+    color: #000;
+    background: url("images/noche.jpg") center/cover no-repeat;
+  }
+  
+  .perfil {
+    background-color: #ffffff;
+    color: #000;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 270px;
+  }
+  
+  .perfil-header {
+    background-color: #f39a1f;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 0.375rem 0.375rem 0 0;
+  }
+  
+  .datos_personales,
+  .datos_cuenta {
+    margin-top: 20px;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #000;
+  }
+  
+  .input-label {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .inicio {
+    background-color: #f39a1f;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 0.375rem;
+    cursor: pointer;
+  }
+  
+  .inicio:hover {
+    background-color: #e08a10;
+  }
+  

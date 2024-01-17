@@ -13,13 +13,13 @@ use CGI::Cookie;
 my $cgi = CGI->new;
 $cgi->charset("UTF-8");
 my $type = $cgi->param("type");
+my $action = $cgi->param("action");
 
 my %cookies = CGI::Cookie->fetch();
 my $session_cookie = $cookies{"id_session_$type"};
 
 print ($cgi->header("text/xml"));
 print "<status>\n";
-my $action = $cgi->param("action");
 if ($action eq "check") {
     if ($session_cookie) {
         my $session_id = $session_cookie->value();
