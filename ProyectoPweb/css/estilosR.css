@@ -1,0 +1,22 @@
+h1{
+  font-size: 300%;
+  font-family: Times New Roman;
+  text-align: center;
+}
+#opciones{
+  padding: 50px 50px;
+  width: 550px;
+  border: 1px solid black;
+  margin: auto;
+  background-color:rgb(105, 188, 232);
+}
+.input-group{
+  margin: 10px 70px;
+  text-align: justify;
+}
+.boton{
+  padding: 5px 18px;
+  border-radius: 7px;
+  margin: auto;
+  display: block;
+}
